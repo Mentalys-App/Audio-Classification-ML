@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emotion Prediction</title>
+</head>
+<body>
+    <h1>Emotion Prediction</h1>
+    <form action="/predict" method="post" enctype="multipart/form-data">
+        <label for="audio_file">Upload an audio file:</label>
+        <input type="file" id="audio_file" name="audio_file" accept="audio/*" required>
+        <button type="submit">Predict</button>
+    </form>
+
+    <div id="result"></div>
+</body>
+<script>
+    const form = document.querySelector('form');
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData(form);
+
+        const response = await fetch('/predict', {
+            method: 'POST',
+            body: formData
+        });
+        const result = await response.json();
+
+        const resultDiv = document.getElementById('result');
+        resultDiv.innerHTML = `
+            <h2>Prediction Result</h2>
+            <p><strong>Emotion:</strong> ${result.predicted_emotion || 'N/A'}</p>
+            <h3>Confidence Scores</h3>
+            <pre>${JSON.stringify(result.confidence_scores || {}, null, 2)}</pre>
+        `;
+    });
+</script>
+</html>
