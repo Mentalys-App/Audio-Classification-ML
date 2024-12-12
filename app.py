@@ -98,17 +98,17 @@ def predict_emotion():
     audio_file.save(file_path)
 
     try:
-        # Ekstraksi fitur dan prediksi
+        # Feature extraction and prediction
         features = get_predict_feat(file_path)
         predictions = loaded_model.predict(features)
         label_names = list(encoder.categories_[0])
         predicted_label_index = np.argmax(predictions)
         predicted_label = label_names[predicted_label_index]
 
-        # Confidence scores (dalam persentase dan dibulatkan ke 8 angka desimal)
+        # Confidence scores 
         confidence_scores = {label: round(float(predictions[0][idx]) * 100, 8) for idx, label in enumerate(label_names)}
 
-        # Kategorisasi emosi
+        # Category of emotion
         non_depression_labels = ['neutral', 'calm', 'happy', 'surprise']
         depression_labels = ['sad', 'angry', 'fear', 'disgust']
 
@@ -121,7 +121,6 @@ def predict_emotion():
 
         os.remove(file_path)
 
-        # Kirim hasil ke template
         return render_template('result.html', 
                                prediction=predicted_label,
                                confidence_scores=confidence_scores,
@@ -141,14 +140,13 @@ def record_from_mic():
 
 @app.route('/predict_recorded', methods=['GET'])
 def predict_recorded():
-    # Path ke file rekaman
     recorded_file_path = 'uploads/recorded_audio.wav'
     
     if not os.path.exists(recorded_file_path):
         return render_template('index.html', error='No recorded file found. Please record audio first.')
 
     try:
-        # Proses prediksi menggunakan file rekaman
+        # Predict with recorded file
         features = get_predict_feat(recorded_file_path)
         predictions = loaded_model.predict(features)
         label_names = list(encoder.categories_[0])
@@ -158,7 +156,7 @@ def predict_recorded():
         # Confidence scores
         confidence_scores = {label: round(float(predictions[0][idx]) * 100, 8) for idx, label in enumerate(label_names)}
 
-        # Kategorisasi emosi
+        # Category of Emotion
         non_depression_labels = ['neutral', 'calm', 'happy', 'surprise']
         depression_labels = ['sad', 'angry', 'fear', 'disgust']
 
@@ -169,7 +167,6 @@ def predict_recorded():
             category = "Non-Depression"
             support_percentage = round(sum(confidence_scores[label] for label in non_depression_labels), 8)
 
-        # Tampilkan hasil di template
         return render_template('result.html', 
                                prediction=predicted_label,
                                confidence_scores=confidence_scores,
@@ -182,7 +179,7 @@ def predict_recorded():
 
 @app.route('/')
 def home():
-    return render_template('index.html')  # Create an `index.html` for file upload interface
+    return render_template('index.html')  
 
 # Run the app
 if __name__ == '__main__':

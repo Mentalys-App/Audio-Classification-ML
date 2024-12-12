@@ -10,7 +10,7 @@
     <div class="container mt-5">
         <h1 class="text-center">Emotion Classification from Audio</h1>
         
-        <!-- Form untuk upload file -->
+        <!-- Form upload file -->
         <form action="/predict" method="post" enctype="multipart/form-data" class="mt-3">
             <div class="mb-3">
                 <label for="audioFile" class="form-label">Upload Audio File</label>
@@ -19,12 +19,12 @@
             <button type="submit" class="btn btn-primary">Analyze Emotion</button>
         </form>
 
-        <!-- Form untuk merekam audio -->
+        <!-- Form record audio -->
         <form action="/record" method="get" class="mt-3">
             <button type="submit" class="btn btn-secondary">Record from Microphone</button>
         </form>
 
-        <!-- Form untuk menggunakan file rekaman -->
+        <!-- Form use recorded audio -->
         <form action="/predict_recorded" method="get" class="mt-3">
             <button type="submit" class="btn btn-success">Use Recorded File</button>
         </form>

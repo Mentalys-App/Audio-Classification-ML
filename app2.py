@@ -72,7 +72,7 @@ def predict_emotion():
     audio_file.save(file_path)
 
     try:
-        # Ekstraksi fitur dan prediksi
+        # Feature extraction and prediction
         features = get_predict_feat(file_path)
         predictions = loaded_model.predict(features)
         label_names = list(encoder.categories_[0])
@@ -82,7 +82,7 @@ def predict_emotion():
         # Confidence scores
         confidence_scores = {label: float(predictions[0][idx]) for idx, label in enumerate(label_names)}
 
-        # Kategorisasi emosi
+        # Category of emotion
         non_depression_labels = ['neutral', 'calm', 'happy', 'surprise']
         depression_labels = ['sad', 'angry', 'fear', 'disgust']
 
@@ -93,7 +93,7 @@ def predict_emotion():
             category = "NonDepression"
             support_percentage = sum(confidence_scores[label] for label in non_depression_labels) * 100
 
-        os.remove(file_path)  # Hapus file audio yang diunggah
+        os.remove(file_path)  
 
         return jsonify({
             'predicted_emotion': predicted_label,
@@ -109,7 +109,7 @@ def predict_emotion():
 # Home route
 @app.route('/')
 def home():
-    return render_template('index_copy.html')  # Create an `_copy` for file upload interface
+    return render_template('index_copy.html') 
 
 # Run the app
 if __name__ == '__main__':
